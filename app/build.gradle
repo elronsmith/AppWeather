@@ -49,7 +49,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:1.2.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.2"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     // lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -64,6 +64,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.core:core-ktx:1.3.2"
+
+    implementation project(path: ':libNet')
+    implementation project(path: ':libCore')
+    implementation project(path: ':libDatabase')
 
     testImplementation "junit:junit:4.13.1"
     androidTestImplementation "androidx.test.ext:junit:1.1.2"

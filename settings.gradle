@@ -1,2 +1,5 @@
+include ':libDatabase'
+include ':libCore'
+include ':libNet'
 rootProject.name='AppWeather'
 include ':app'
