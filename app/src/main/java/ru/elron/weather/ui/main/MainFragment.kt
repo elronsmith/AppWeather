@@ -76,7 +76,7 @@ class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), Lifecycle
                 findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddFragment())
             }
             is MainEvent.ShowScreenCity -> {
-                // TODO
+                findNavController().navigate(MainFragmentDirections.actionMainFragmentToCityFragment(event.city))
             }
             is MainEvent.ShowDialogDeleteItem -> {
                 LifecycleDialogFragment()

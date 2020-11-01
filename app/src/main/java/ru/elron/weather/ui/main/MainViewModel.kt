@@ -110,6 +110,7 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
         val city = (adapter.observableList[index] as MainItemObservable).city
         val observer: SingleObserver<Boolean> = object : SingleObserver<Boolean>() {
             override fun onChangedSingle(value: Boolean) {
+                unsubscribe()
                 adapter.observableList.removeAt(index)
                 adapter.notifyDataSetChanged()
                 eventLiveData.postValue(MainEvent.ShowToastDeleteOk)

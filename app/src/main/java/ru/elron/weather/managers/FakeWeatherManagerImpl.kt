@@ -50,4 +50,17 @@ class FakeWeatherManagerImpl : IWeatherManager {
 
         return liveData
     }
+
+    override fun getWeatherByCityAsync(city: String): SingleLiveData<Weather> {
+        val liveData = SingleLiveData<Weather>()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val weather = Weather()
+            weather.city = City()
+            weather.city!!.name = city
+            liveData.postValue(weather)
+        }
+
+        return liveData
+    }
 }

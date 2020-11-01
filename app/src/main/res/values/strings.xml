@@ -2,6 +2,7 @@
     <string name="app_name">Weather</string>
     <string name="main_title">Погода</string>
     <string name="add_title">Добавить город</string>
+    <string name="forecast_subtitle">Прогноз погоды</string>
 
     <string name="empty">Пусто</string>
     <string name="degrees">%d°</string>
@@ -11,6 +12,14 @@
 
     <string name="button_ok">ОК</string>
     <string name="button_delete">УДАЛИТЬ</string>
+    <string name="button_forecast">ПРОГНОЗ ПОГОДЫ</string>
+
+    <string name="info_temp">Температура: %d°</string>
+    <string name="info_pressure">Давление: %d</string>
+    <string name="info_humidity">Влажность: %d %%</string>
+    <string name="info_speed">Скорость: %d м/с</string>
+    <string name="info_deg">Направление: %d</string>
+    <string name="info_null">Нет данных!</string>
 
     <string name="dialog_main_delete_item_title">Удаление</string>
     <string name="dialog_main_delete_item_message">Удалить город %s ?</string>

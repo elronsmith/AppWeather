@@ -9,4 +9,5 @@ interface IWeatherManager {
     fun getSearchByCityAsync(city: String): SubscriberLiveData<Weather>
     fun addCityAsync(): SingleLiveData<Boolean>
     fun deleteCityAsync(city: String): SingleLiveData<Boolean>
+    fun getWeatherByCityAsync(city: String): SingleLiveData<Weather>
 }

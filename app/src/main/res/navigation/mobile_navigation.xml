@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_mainFragment_to_addFragment"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_cityFragment"
+            app:destination="@id/cityFragment" />
     </fragment>
     <fragment
         android:id="@+id/addFragment"
@@ -24,6 +27,26 @@
         android:id="@+id/addListFragment"
         android:name="ru.elron.weather.ui.add.list.AddListFragment"
         android:label="AddListFragment">
+        <argument
+            android:name="city"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/cityFragment"
+        android:name="ru.elron.weather.ui.city.CityFragment"
+        android:label="CityFragment">
+        <argument
+            android:name="city"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_cityFragment_to_forecastFragment"
+            app:destination="@id/forecastFragment"
+            app:launchSingleTop="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/forecastFragment"
+        android:name="ru.elron.weather.ui.city.forecast.ForecastFragment"
+        android:label="ForecastFragment" >
         <argument
             android:name="city"
             app:argType="string" />

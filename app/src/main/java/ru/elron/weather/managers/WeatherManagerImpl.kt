@@ -129,6 +129,23 @@ class WeatherManagerImpl(
         return true
     }
 
+    override fun getWeatherByCityAsync(city: String): SingleLiveData<Weather> {
+        val liveData = SingleLiveData<Weather>()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val entity = databaseRepository.getWeather(city)
+
+            val weather = WeatherParser.getWeatherOrNull(entity?.data)
+            if (weather?.city == null || weather.city!!.name == null) {
+                liveData.postValue(Weather.EMPTY)
+            } else {
+                liveData.postValue(weather)
+            }
+        }
+
+        return liveData
+    }
+
     private fun isExpired(entity: WeatherEntity): Boolean {
         return System.currentTimeMillis() > entity.date + expired_time
     }

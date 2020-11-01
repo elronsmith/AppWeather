@@ -16,6 +16,7 @@ class Weather {
 }
 
 class WeatherItem {
+    /** время */
     var dt: Long = 0
     var main: Main? = null
     var weather: List<Weather2>? = null
@@ -24,20 +25,29 @@ class WeatherItem {
     var dt_txt: String? = null
 
     class Main {
+        /** температура */
         var temp: Double = .0
+        /** давление */
         var pressure: Int = 0
+        /** влажность */
         var humidity: Int = 0
     }
 
     class Weather2 {
         var id: Int = 0
         var main: String? = null
+
+        /**
+         * описание погоды, например: небольшая облачность
+         */
         var description: String? = null
         var icon: String? = null
     }
 
     class Wind {
+        /** скорость */
         var speed: Double = .0
+        /** направление */
         var deg: Int = 0
     }
 }
