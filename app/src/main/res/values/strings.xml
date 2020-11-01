@@ -1,8 +1,21 @@
 <resources>
     <string name="app_name">Weather</string>
     <string name="main_title">Погода</string>
+    <string name="add_title">Добавить город</string>
 
     <string name="empty">Пусто</string>
     <string name="degrees">%d°</string>
+    <string name="city">Город</string>
+    <string name="search">найти</string>
+    <string name="error_city_empty">Введите название города</string>
+
+    <string name="button_ok">ОК</string>
+
+    <string name="dialog_add_error_city_not_found_title">Ошибка</string>
+    <string name="dialog_add_error_city_not_found_message">Город %s не найден!</string>
+    <string name="dialog_add_list_error_add_title">Ошибка</string>
+    <string name="dialog_add_list_error_add_message">Не удалось добавить город!</string>
+
+    <string name="toast_add_list_success">Добавлен!</string>
 
 </resources>

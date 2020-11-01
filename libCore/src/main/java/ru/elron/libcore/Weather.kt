@@ -1,8 +1,18 @@
 package ru.elron.libcore
 
 class Weather {
+    companion object {
+        val EMPTY = Weather()
+    }
+
     var list: List<WeatherItem>? = null
     var city: City? = null
+
+    fun hasCityName(): Boolean {
+        if (city == null) return false
+        if (city!!.name == null) return false
+        return city!!.name!!.isNotEmpty()
+    }
 }
 
 class WeatherItem {

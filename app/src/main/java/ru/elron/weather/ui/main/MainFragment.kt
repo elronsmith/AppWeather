@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import ru.elron.libcore.base.BaseFragment
 import ru.elron.libcore.base.BaseViewModel
 import ru.elron.weather.App
 import ru.elron.weather.R
 import ru.elron.weather.databinding.FragmentMainBinding
 import ru.elron.weather.view.LifecycleDialogFragment
+import ru.elron.weather.view.hideButtonBack
 import ru.elron.weather.view.setSubtitle
 import ru.elron.weather.view.setTitle
 
@@ -46,6 +48,7 @@ class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), Lifecycle
         super.onResume()
         setTitle(getString(R.string.main_title))
         setSubtitle(null)
+        hideButtonBack()
     }
 
     override fun onState(state: MainState) {
@@ -61,7 +64,7 @@ class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), Lifecycle
     override fun onEvent(event: MainEvent) {
         when(event) {
             is MainEvent.ShowScreenAdd -> {
-                // TODO
+                findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddFragment())
             }
             is MainEvent.ShowScreenCity -> {
                 // TODO

@@ -1,4 +1,4 @@
-package ru.elron.weather.view;
+package ru.elron.weather.view.databindingadapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

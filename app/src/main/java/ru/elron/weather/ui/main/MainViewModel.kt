@@ -65,10 +65,6 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
         super.onCleared()
     }
 
-    fun updateCities() {
-
-    }
-
     fun requestGetWeather() {
         if (stateLiveData.value is MainState.Completed) return
         requestGetWeatherForce()
@@ -84,6 +80,7 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
 
     private fun onGetWeatherListResult(list: List<Weather>) {
         entity.progressVisible.set(false)
+        entity.addEnabled.set(true)
         stateLiveData.value = MainState.Completed
         adapter.observableList.clear()
 
