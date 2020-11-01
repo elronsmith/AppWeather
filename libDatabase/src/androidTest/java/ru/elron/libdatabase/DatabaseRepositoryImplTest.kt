@@ -44,6 +44,22 @@ class DatabaseRepositoryImplTest {
     }
 
     @Test
+    fun getCityList_isCorrect() {
+        Assert.assertEquals(0, repository.getSize())
+
+        var list = repository.getCityList()
+        Assert.assertNotNull(list)
+        Assert.assertEquals(0, list.size)
+
+        repository.setWeather(WeatherEntity(1, "Moscow", "data1", 1))
+        repository.setWeather(WeatherEntity(2, "London", "data2", 2))
+
+        list = repository.getCityList()
+        Assert.assertNotNull(list)
+        Assert.assertEquals(2, list.size)
+    }
+
+    @Test
     fun getWeather_isCorrect() {
         Assert.assertEquals(0, repository.getSize())
 

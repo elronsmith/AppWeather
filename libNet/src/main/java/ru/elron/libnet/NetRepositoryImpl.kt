@@ -3,6 +3,7 @@ package ru.elron.libnet
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
 
 class NetRepositoryImpl : INetRepository {
     private val MAIN_URL = "http://api.openweathermap.org"
@@ -17,7 +18,7 @@ class NetRepositoryImpl : INetRepository {
     private val client = OkHttpClient()
     private val forecastUrlBuilder = "$MAIN_URL$FORECAST_PATH".toHttpUrlOrNull()!!.newBuilder()
 
-    override fun getWeatherByCity(city: String): Pair<Int, String?>? {
+    override fun getWeatherByCity(city: String): Pair<Int, String?> {
         forecastUrlBuilder.setEncodedQueryParameter(PARAM_Q, city)
             .addEncodedQueryParameter(PARAM_APPID, "3aec242b4db00a9092b74b2233a86a4d")
             .addEncodedQueryParameter(PARAM_LANG, "ru")
@@ -30,9 +31,17 @@ class NetRepositoryImpl : INetRepository {
             .build()
 
         val call = client.newCall(request)
-        val responce = call.execute()
-        val json: String? = responce.body?.string()
+        var code = 0
+        var json: String? = null
 
-        return Pair(responce.code, json)
+        try {
+            val responce = call.execute()
+            code = responce.code
+            json = responce.body?.string()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return Pair(code, json)
     }
 }

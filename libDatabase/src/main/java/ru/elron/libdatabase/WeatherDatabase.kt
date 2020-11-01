@@ -15,5 +15,5 @@ abstract class WeatherDatabase : RoomDatabase() {
         }
     }
 
-    abstract fun workDao(): WeatherDao
+    abstract fun weatherDao(): WeatherDao
 }

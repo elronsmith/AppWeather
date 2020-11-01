@@ -3,7 +3,7 @@ package ru.elron.libdatabase
 class DatabaseRepositoryImpl(private val weatherDao: WeatherDao) : IDatabaseRepository {
     companion object {
         fun getInstance(database: WeatherDatabase): DatabaseRepositoryImpl {
-            return DatabaseRepositoryImpl(database.workDao())
+            return DatabaseRepositoryImpl(database.weatherDao())
         }
     }
 
@@ -21,6 +21,10 @@ class DatabaseRepositoryImpl(private val weatherDao: WeatherDao) : IDatabaseRepo
 
     override fun setWeather(weather: WeatherEntity) {
         weatherDao.setWeather(weather)
+    }
+
+    override fun getCityList(): List<String> {
+        return weatherDao.getCityList()
     }
 
     override fun deleteWeather(weather: WeatherEntity) {

@@ -6,6 +6,8 @@ interface IDatabaseRepository {
     fun getWeather(city: String): WeatherEntity?
     fun setWeather(weather: WeatherEntity)
 
+    fun getCityList(): List<String>
+
     fun deleteWeather(weather: WeatherEntity)
     fun deleteWeatherById(id: Long)
     fun deleteWeatherByCity(city: String)

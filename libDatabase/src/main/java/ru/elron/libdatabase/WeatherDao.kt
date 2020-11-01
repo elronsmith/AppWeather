@@ -7,6 +7,9 @@ abstract class WeatherDao {
     @Query("SELECT * FROM ${WeatherEntity.TABLE_NAME}")
     abstract fun getWeatherList(): List<WeatherEntity>
 
+    @Query("SELECT city FROM ${WeatherEntity.TABLE_NAME}")
+    abstract fun getCityList(): List<String>
+
     @Query("SELECT * FROM ${WeatherEntity.TABLE_NAME} WHERE id = :id")
     abstract fun getWeather(id: Long): WeatherEntity?
 
