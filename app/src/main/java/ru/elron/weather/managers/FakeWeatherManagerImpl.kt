@@ -40,4 +40,14 @@ class FakeWeatherManagerImpl : IWeatherManager {
 
         return liveData
     }
+
+    override fun deleteCityAsync(city: String): SingleLiveData<Boolean> {
+        val liveData = SingleLiveData<Boolean>()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            liveData.postValue(true)
+        }
+
+        return liveData
+    }
 }

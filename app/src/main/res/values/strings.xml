@@ -10,12 +10,16 @@
     <string name="error_city_empty">Введите название города</string>
 
     <string name="button_ok">ОК</string>
+    <string name="button_delete">УДАЛИТЬ</string>
 
+    <string name="dialog_main_delete_item_title">Удаление</string>
+    <string name="dialog_main_delete_item_message">Удалить город %s ?</string>
     <string name="dialog_add_error_city_not_found_title">Ошибка</string>
     <string name="dialog_add_error_city_not_found_message">Город %s не найден!</string>
     <string name="dialog_add_list_error_add_title">Ошибка</string>
     <string name="dialog_add_list_error_add_message">Не удалось добавить город!</string>
 
-    <string name="toast_add_list_success">Добавлен!</string>
+    <string name="toast_city_added">Город добавлен!</string>
+    <string name="toast_city_deleted">Город удалён!</string>
 
 </resources>

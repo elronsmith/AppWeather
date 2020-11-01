@@ -114,6 +114,21 @@ class WeatherManagerImpl(
         return true
     }
 
+    override fun deleteCityAsync(city: String): SingleLiveData<Boolean> {
+        val liveData = SingleLiveData<Boolean>()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            liveData.postValue(deleteCity(city))
+        }
+
+        return liveData
+    }
+
+    private fun deleteCity(city: String): Boolean {
+        databaseRepository.deleteWeatherByCity(city)
+        return true
+    }
+
     private fun isExpired(entity: WeatherEntity): Boolean {
         return System.currentTimeMillis() > entity.date + expired_time
     }

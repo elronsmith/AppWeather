@@ -18,6 +18,9 @@ import ru.elron.weather.view.setSubtitle
 import ru.elron.weather.view.setTitle
 import ru.elron.weather.view.showButtonBack
 
+/**
+ * Поиск и добавление города
+ */
 class AddFragment : BaseFragment<AddEntity, AddState, AddEvent>(), LifecycleDialogFragment.Builder {
     companion object {
         const val DIALOG_ERROR_CITY_NOT_FOUND = 100

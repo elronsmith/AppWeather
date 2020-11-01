@@ -38,7 +38,7 @@ class MainItemViewHolder(
     override fun update(position: Int) {
         val o = callback.getObservable(position) as MainItemObservable
         binding.rootItem.setOnClickListener(this)
+        binding.rootItem.setOnLongClickListener(this)
         binding.observable = o
-
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,9 @@ import ru.elron.weather.view.hideButtonBack
 import ru.elron.weather.view.setSubtitle
 import ru.elron.weather.view.setTitle
 
+/**
+ * Список городов
+ */
 class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), LifecycleDialogFragment.Builder {
     companion object {
         const val DIALOG_ITEM_DELETE = 100
@@ -51,6 +55,11 @@ class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), Lifecycle
         hideButtonBack()
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.stateLiveData.value = MainState.Idle
+    }
+
     override fun onState(state: MainState) {
         when(state) {
             is MainState.Idle -> {
@@ -70,12 +79,21 @@ class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), Lifecycle
                 // TODO
             }
             is MainEvent.ShowDialogDeleteItem -> {
-                // TODO
+                LifecycleDialogFragment()
+                    .withId(DIALOG_ITEM_DELETE)
+                    .withChildFragmentId(R.id.nav_host_fragment, id)
+                    .withIndex(event.index)
+                    .withMessage(event.city)
+                    .show(requireActivity())
+            }
+            is MainEvent.ShowToastDeleteOk -> {
+                Toast.makeText(requireActivity(), R.string.toast_city_deleted, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     override fun getMainViewModel(): BaseViewModel<MainEntity, MainState, MainEvent> = viewModel
+
     override fun getLifecycleDialogInstance(
         id: Int,
         dialogFragment: LifecycleDialogFragment
@@ -85,7 +103,13 @@ class MainFragment : BaseFragment<MainEntity, MainState, MainEvent>(), Lifecycle
 
         when(id) {
             DIALOG_ITEM_DELETE -> {
-                // TODO
+                val city = dialogFragment.getBundleMessage()!!
+                val index = dialogFragment.getBundleIndex()
+                builder.setTitle(R.string.dialog_main_delete_item_title)
+                builder.setMessage(getString(R.string.dialog_main_delete_item_message, city))
+                builder.setPositiveButton(R.string.button_delete) {_, _ ->
+                    viewModel.deleteItem(index)
+                }
             }
         }
 

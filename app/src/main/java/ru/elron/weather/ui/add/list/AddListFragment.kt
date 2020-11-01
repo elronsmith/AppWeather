@@ -20,6 +20,9 @@ import ru.elron.weather.view.setSubtitle
 import ru.elron.weather.view.setTitle
 import ru.elron.weather.view.showButtonBack
 
+/**
+ * Добавление города
+ */
 class AddListFragment : BaseFragment<AddListEntity, AddListState, AddListEvent>(), LifecycleDialogFragment.Builder {
     companion object {
         const val DIALOG_ERROR_ADD = 100
@@ -56,7 +59,7 @@ class AddListFragment : BaseFragment<AddListEntity, AddListState, AddListEvent>(
     override fun onEvent(event: AddListEvent) {
         when(event) {
             is AddListEvent.OnAddItemSuccess -> {
-                Toast.makeText(requireActivity(), R.string.toast_add_list_success, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), R.string.toast_city_added, Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
             is AddListEvent.OnAddItemError -> {

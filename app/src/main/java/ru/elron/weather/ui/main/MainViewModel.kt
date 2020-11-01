@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import ru.elron.libcore.Weather
 import ru.elron.libcore.base.BaseViewModel
+import ru.elron.libcore.base.SingleObserver
 import ru.elron.libcore.base.SubscriberObserver
 import ru.elron.weather.App
 import ru.elron.weather.R
@@ -51,7 +52,11 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
     }
 
     override fun onLongItemClick(v: View?, observable: AObservable, position: Int) {
-        eventLiveData.postValue(MainEvent.ShowDialogDeleteItem((observable as MainItemObservable).city))
+        with(observable as MainItemObservable) {
+            eventLiveData.postValue(MainEvent.ShowDialogDeleteItem(
+                this.city,
+                position))
+        }
     }
 
     override fun onItemClick(v: View?, observable: AObservable, position: Int) {
@@ -66,12 +71,12 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
     }
 
     fun requestGetWeather() {
-        if (stateLiveData.value is MainState.Completed) return
-        requestGetWeatherForce()
+        if (stateLiveData.value is MainState.Idle)
+            requestGetWeatherForce()
     }
 
     private fun requestGetWeatherForce() {
-        if (stateLiveData.value is MainState.Completed) return
+        if (stateLiveData.value is MainState.Loading) return
 
         stateLiveData.value = MainState.Loading
         entity.progressVisible.set(true)
@@ -84,9 +89,8 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
         stateLiveData.value = MainState.Completed
         adapter.observableList.clear()
 
-        for (weather in list) {
+        for (weather in list)
             addWeather(weather)
-        }
 
         adapter.notifyDataSetChanged()
     }
@@ -100,6 +104,20 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
             city,
             degreeString
         ))
+    }
+
+    fun deleteItem(index: Int) {
+        val city = (adapter.observableList[index] as MainItemObservable).city
+        val observer: SingleObserver<Boolean> = object : SingleObserver<Boolean>() {
+            override fun onChangedSingle(value: Boolean) {
+                adapter.observableList.removeAt(index)
+                adapter.notifyDataSetChanged()
+                eventLiveData.postValue(MainEvent.ShowToastDeleteOk)
+            }
+        }
+
+        manager.deleteCityAsync(city).observeForever(observer)
+
     }
 }
 
