@@ -10,9 +10,9 @@ import ru.elron.libcore.base.SubscriberLiveData
 
 class FakeWeatherManagerImpl : IWeatherManager {
     private val getWeatherListLiveData = SubscriberLiveData<List<Weather>>()
-    private val getSearchByCityLiveData = SubscriberLiveData<Weather>()
+    private val getSearchByCityLiveData = SingleLiveData<Weather>()
 
-    override fun getWeatherListAsync(): SubscriberLiveData<List<Weather>> {
+    override fun requestGetWeatherListAsync(): SubscriberLiveData<List<Weather>> {
         CoroutineScope(Dispatchers.IO).launch {
             getWeatherListLiveData.postValue(ArrayList<Weather>())
         }
@@ -20,7 +20,7 @@ class FakeWeatherManagerImpl : IWeatherManager {
         return getWeatherListLiveData
     }
 
-    override fun getSearchByCityAsync(city: String): SubscriberLiveData<Weather> {
+    override fun requestGetSearchByCityAsync(city: String): SingleLiveData<Weather> {
         CoroutineScope(Dispatchers.IO).launch {
             val weather = Weather()
             weather.city = City()
@@ -31,7 +31,7 @@ class FakeWeatherManagerImpl : IWeatherManager {
         return getSearchByCityLiveData
     }
 
-    override fun addCityAsync(): SingleLiveData<Boolean> {
+    override fun addCityAsync(city: String): SingleLiveData<Boolean> {
         val liveData = SingleLiveData<Boolean>()
 
         CoroutineScope(Dispatchers.IO).launch {

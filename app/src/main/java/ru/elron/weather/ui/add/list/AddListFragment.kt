@@ -22,7 +22,6 @@ import ru.elron.weather.view.showButtonBack
 
 /**
  * Добавление города
- * TODO ошибка в навигации
  */
 class AddListFragment : BaseFragment<AddListEntity, AddListState, AddListEvent>(), LifecycleDialogFragment.Builder {
     companion object {
@@ -61,7 +60,7 @@ class AddListFragment : BaseFragment<AddListEntity, AddListState, AddListEvent>(
         when(event) {
             is AddListEvent.OnAddItemSuccess -> {
                 Toast.makeText(requireActivity(), R.string.toast_city_added, Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
+                findNavController().popBackStack()
             }
             is AddListEvent.OnAddItemError -> {
                 LifecycleDialogFragment()

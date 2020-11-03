@@ -20,9 +20,7 @@ class AddListViewModel(application: Application, stateHandle: SavedStateHandle) 
     ) {
 
     private val manager = App.MANAGER
-    private val addListener = View.OnClickListener {
-        addCityAsync()
-    }
+    private val addListener = View.OnClickListener { addCityAsync() }
 
     private val addCityObserver: SingleObserver<Boolean> = object : SingleObserver<Boolean>() {
         override fun onChangedSingle(value: Boolean) {
@@ -31,14 +29,14 @@ class AddListViewModel(application: Application, stateHandle: SavedStateHandle) 
             if (value) {
                 eventLiveData.postValue(AddListEvent.OnAddItemSuccess)
             } else {
-                eventLiveData.postValue(AddListEvent.OnAddItemSuccess)
+                eventLiveData.postValue(AddListEvent.OnAddItemError)
             }
         }
     }
 
     private fun addCityAsync() {
         entity.addEnabled.set(false)
-        manager.addCityAsync().observeForever(addCityObserver)
+        manager.addCityAsync(entity.city.get()!!).observeForever(addCityObserver)
     }
 
     override fun getNewEntity(): AddListEntity = AddListEntity()
@@ -49,6 +47,11 @@ class AddListViewModel(application: Application, stateHandle: SavedStateHandle) 
 
     fun onCreateView(city: String) {
         entity.city.set(city)
+    }
+
+    override fun onCleared() {
+        addCityObserver.unsubscribe()
+        super.onCleared()
     }
 }
 

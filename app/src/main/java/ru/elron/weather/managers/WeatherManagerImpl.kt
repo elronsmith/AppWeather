@@ -19,27 +19,19 @@ class WeatherManagerImpl(
     private val expired_time: Long = 10 * 60 * 1000
 
     private val getWeatherListLiveData = SubscriberLiveData<List<Weather>>()
-    private val getSearchByCityLiveData = SubscriberLiveData<Weather>()
+    private val getSearchByCityLiveData = SingleLiveData<Weather>()
 
-    private var lastSearchResultPair: Pair<Weather, String>? = null
+    private val cache = HashMap<String, Pair<Weather, String>>()
 
-    override fun getWeatherListAsync(): SubscriberLiveData<List<Weather>> {
+    override fun requestGetWeatherListAsync(): SubscriberLiveData<List<Weather>> {
         CoroutineScope(Dispatchers.IO).launch {
-            getWeatherListLiveData.postValue(getWeatherList())
+            getWeatherListLiveData.postValue(requestGetWeatherList())
         }
 
         return getWeatherListLiveData
     }
 
-    override fun getSearchByCityAsync(city: String): SubscriberLiveData<Weather> {
-        CoroutineScope(Dispatchers.IO).launch {
-            getSearchByCityLiveData.postValue(getSearchByCity(city))
-        }
-
-        return getSearchByCityLiveData
-    }
-
-    private fun getWeatherList(): List<Weather>? {
+    private fun requestGetWeatherList(): List<Weather>? {
         val result = ArrayList<Weather>()
 
         var weatherEntityList = databaseRepository.getWeatherList()
@@ -76,40 +68,48 @@ class WeatherManagerImpl(
         return result
     }
 
-    private fun getSearchByCity(city: String): Weather {
+    override fun requestGetSearchByCityAsync(city: String): SingleLiveData<Weather> {
+        CoroutineScope(Dispatchers.IO).launch {
+            getSearchByCityLiveData.postValue(requestGetSearchByCity(city))
+        }
+
+        return getSearchByCityLiveData
+    }
+
+    private fun requestGetSearchByCity(city: String): Weather {
+        // отправляем запрос
         val pair = netRepository.getWeatherByCity(city)
         if (pair.first != 200) {
-            lastSearchResultPair = null
             return Weather.EMPTY
         }
 
+        // парсим
         val weather = WeatherParser.getWeatherOrNull(pair.second)
         if (weather?.city == null || weather.city!!.name == null) {
-            lastSearchResultPair = null
             return Weather.EMPTY
         }
 
-        lastSearchResultPair = Pair(weather, pair.second!!)
+        // сохраняем в кеш
+        cache[city] = Pair(weather, pair.second!!)
 
         return weather
     }
 
-    override fun addCityAsync(): SingleLiveData<Boolean> {
+    override fun addCityAsync(city: String): SingleLiveData<Boolean> {
         val liveData = SingleLiveData<Boolean>()
 
         CoroutineScope(Dispatchers.IO).launch {
-            liveData.postValue(addCity())
+            liveData.postValue(addCity(city))
         }
 
         return liveData
     }
 
-    private fun addCity(): Boolean {
-        if (lastSearchResultPair == null) return false
+    private fun addCity(city: String): Boolean {
+        val pair = cache[city]
+        if (pair == null) return false
 
-        databaseRepository.setWeather(obtainWeatherEntity(
-            lastSearchResultPair!!.first,
-            lastSearchResultPair!!.second))
+        databaseRepository.setWeather(obtainWeatherEntity(pair.first, pair.second))
 
         return true
     }

@@ -80,7 +80,7 @@ class MainViewModel(val app: Application, stateHandle: SavedStateHandle) :
 
         stateLiveData.value = MainState.Loading
         entity.progressVisible.set(true)
-        manager.getWeatherListAsync().observeForever(getWeatherListObserver)
+        manager.requestGetWeatherListAsync().observeForever(getWeatherListObserver)
     }
 
     private fun onGetWeatherListResult(list: List<Weather>) {

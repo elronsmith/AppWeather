@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import ru.elron.libcore.Weather
 import ru.elron.libcore.base.BaseViewModel
-import ru.elron.libcore.base.SubscriberObserver
+import ru.elron.libcore.base.SingleObserver
 import ru.elron.weather.App
 
 class AddViewModel(application: Application, stateHandle: SavedStateHandle) :
@@ -21,12 +21,8 @@ class AddViewModel(application: Application, stateHandle: SavedStateHandle) :
         "add_entity",
         AddState.Idle
     ) {
-    private val TAG = AddViewModel::class.java.simpleName
-
     private val manager = App.MANAGER
-    private val searchListener = View.OnClickListener {
-        searchByCity(entity.city.get()!!)
-    }
+    private val searchListener = View.OnClickListener { searchByCity(entity.city.get()!!) }
     private val cityEditorListener = TextView.OnEditorActionListener {view, actionId, event ->
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             searchListener.onClick(view)
@@ -35,10 +31,9 @@ class AddViewModel(application: Application, stateHandle: SavedStateHandle) :
         false
     }
 
-    private val searchByCityObserver: SubscriberObserver<Weather> = object : SubscriberObserver<Weather>() {
-        override fun onChanged(responce: Weather?) {
-            if (responce == null) return
-            onSearchByCityResult(responce)
+    private val searchByCityObserver: SingleObserver<Weather> = object : SingleObserver<Weather>() {
+        override fun onChangedSingle(value: Weather) {
+            onSearchByCityResult(value)
         }
     }
 
@@ -55,7 +50,7 @@ class AddViewModel(application: Application, stateHandle: SavedStateHandle) :
         entity.progressVisible.set(true)
         stateLiveData.value = AddState.Loading
 
-        manager.getSearchByCityAsync(city).observeForever(searchByCityObserver)
+        manager.requestGetSearchByCityAsync(city).observeForever(searchByCityObserver)
     }
 
     private fun onSearchByCityResult(weather: Weather) {
