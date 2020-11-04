@@ -17,6 +17,7 @@ class WeatherManagerImpl(
     val settings: ISettings
 ) : IWeatherManager {
     private val expired_time: Long = 10 * 60 * 1000
+    private val cacheMaxSize = 10
 
     private val getWeatherListLiveData = SubscriberLiveData<List<Weather>>()
     private val getSearchByCityLiveData = SingleLiveData<Weather>()
@@ -91,8 +92,14 @@ class WeatherManagerImpl(
 
         // сохраняем в кеш
         cache[city] = Pair(weather, pair.second!!)
+        optimizeCache()
 
         return weather
+    }
+
+    private fun optimizeCache() {
+        if (cache.size > cacheMaxSize)
+            cache.remove(cache.keys.first())
     }
 
     override fun addCityAsync(city: String): SingleLiveData<Boolean> {
